@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Portal Calendar</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body class="container-fluid">
+
+	<div class="jumbotron" id ="month">November</div>
+	<table id="Calendar" class = "table table-striped">
+		<thead>
+		<tr class = "info">
+			<th>S</th>
+			<th>M</th>
+			<th>T</th>
+			<th>W</th>
+			<th>TH</th>
+			<th>F</th>
+			<th>S</th>
+		</tr>
+		</thead>
+
+	</table>
+
+  <script>
+
+      var table = document.getElementById("Calendar");
+      var row = null;
+
+      var d = 1;
+      for(var i = 1; i < 5; i++){
+        row = table.insertRow(i);
+        var cell = null;
+        for(var j = 0; j < 7; j++){
+          cell = row.insertCell(j);
+          console.log(d);
+          cell.innerHTML = d++;
+        }
+      }
+
+
+  </script>
+
+</body>
+</html>
