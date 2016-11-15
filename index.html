@@ -9,27 +9,141 @@
   <link rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body class="container-fluid">
-
-	<div class="jumbotron">
-    <p id ="month">November</p>
-    <p id = "year">2016</p>
+	<div class="sidedrawer" id="drawer">
+		<a href="javascript:void(0)" class="closebtn" onclick="closeDrawer()">&times;</a>
+		<h1>Monday 11/14/2017</h1>
+		<p>12 PM - 2 PM</p>
+		<p>Portal Training</p>
+	</div>
+<div id="main">
+	<div class="year well">
+    <p>November</p>
+		<div class="row text-center">
+			<div class="btn-group">
+			  <a role="button" class="btn btn-primary active" href="#">Month</a>
+			  <a role="button" class="btn btn-primary" href="week.html">Week</a>
+			  <a role="button" class="btn btn-primary" href="day.html">Day</a>
+			</div>
+		</div>
   </div>
-	<table id="calendar" class = "table">
-		<thead >
-		<tr class = "days">
-			<th>Sunday</th>
-			<th>Monday</th>
-			<th>Tuesday</th>
-			<th>Wednesday</th>
-			<th>Thursday</th>
-			<th>Friday</th>
-			<th>Saturday</th>
-		</tr>
-		</thead>
 
-	</table>
+		<table class="monthtable table table-bordered">
+			<thead class = "weekdays" >
+			<tr>
+				<th>Sunday</th>
+				<th>Monday</th>
+				<th>Tuesday</th>
+				<th>Wednesday</th>
+				<th>Thursday</th>
+				<th>Friday</th>
+				<th>Saturday</th>
+			</tr>
+			</thead>
+			<tbody class = "monthday">
+				<tr>
+					<td>
+						<p>1</p>
+						<button type="button" class="monthevent" onclick="openDrawer()"></button>
+					</td>
+					<td>2</td>
+					<td>3</td>
+					<td>4</td>
+					<td>5</td>
+					<td>6</td>
+					<td>7</td>
+				</tr>
 
-<script src="dayLoader.js"></script>
+				<tr>
+					<td>8</td>
+					<td>9</td>
+					<td>10</td>
+					<td>11</td>
+					<td>12</td>
+					<td>13</td>
+					<td>14</td>
+				</tr>
+
+				<tr>
+					<td>15</td>
+					<td>16</td>
+					<td>17</td>
+					<td>18</td>
+					<td>19</td>
+					<td>20</td>
+					<td>21</td>
+				</tr>
+
+				<tr>
+					<td>22</td>
+					<td>23</td>
+					<td>24</td>
+					<td>25</td>
+					<td>26</td>
+					<td>27</td>
+					<td>28</td>
+				</tr>
+			</tbody>
+
+		</table>
+	</div>
+	<div class="footermonth">
+		<a href="#eventpopup" data-rel="popup" class="btn btn-warning btn-circle btn-lg"><span class="glyphicon glyphicon-plus"></span></a>
+
+	</div>
+		<div >
+			<form>
+				<div class="form-group">
+					<h3>Calendar Event</h3>
+					<label for="eventtitle">Title</label>
+					<input type="text" placeholder="Title" class="form-control">
+					<div class="eventdatetime">
+						<label for="eventdate">Date</label>
+						<input type="date" placeholder="Title" class="form-control">
+
+						<label for="eventtime">Time</label>
+						<input type="time" placeholder="Title" class="form-control">
+					</div>
+
+
+					<label for="eventrepetition">Repetition</label>
+					<div class="repetitionradio">
+						<input type="radio"  class="form-check-input">None
+						<input type="radio"  class="form-check-input">Weekly
+						<input type="radio"  class="form-check-input">Monthly
+					</div>
+					<div class="weeklycheckbox">
+						<input type="checkbox" class="form-check-input">S
+						<input type="checkbox" class="form-check-input">M
+						<input type="checkbox" class="form-check-input">T
+						<input type="checkbox" class="form-check-input">W
+						<input type="checkbox" class="form-check-input">Th
+						<input type="checkbox" class="form-check-input">F
+						<input type="checkbox" class="form-check-input">Sa
+					</div>
+					<label for="eventdescription">Description</label>
+					<textarea class="form-control" rows="5" id="eventdescriptions"></textarea>
+
+
+				</div>
+			</form>
+		</div>
+
+
+	<script>
+	function openDrawer(){
+		document.getElementById("drawer").style.width = "250px";
+    document.getElementById("main").style.marginLeft = "250px";
+	}
+	function closeDrawer(){
+		document.getElementById("drawer").style.width = "0";
+    document.getElementById("main").style.marginLeft= "0";
+	}
+
+	</script>
+
+
+
+<!-- <script src="monthLoader.js"></script> -->
 </body>
 
 </html>

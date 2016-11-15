@@ -1,28 +1,91 @@
-.jumbotron {
-  background-color:lightblue;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-#month {
-  text-align: center;
-  font-size: 10em;
-  color: white;
-  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-
-}
-#year {
-  text-align: center;
-  color: white;
-  font-size: 2em;
+html, body {
+  height: 100%;
+  overflow: auto;
 }
 
-.days th{
+.btn-group {
+ text-align: center;
+}
+
+.weekdays th , .daytable th{
   background-color: lightblue;
   text-align: center;
 
 }
-.day {
+.monthday tr td{
   padding: 20px;
   text-align: center;
   font-size: 1.7em;
-  
+
+}
+.monthday tr {
+  height: 100px;
+}
+.year, .day, .week {
+  text-align: center;
+  font-size: 3em;
+}
+.monthevent {
+  background-color:green;
+  border: none;
+  height: 15px;
+  width: 70%;
+}
+
+#daytime {
+
+  width: 40px;
+}
+
+.nav.navbar-nav {
+  align-content: center;
+}
+.sidedrawer {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  transition: 0.5s;
+  padding-top: 60px;
+  background-color: lightgray;
+
+}
+.sidedrawer .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+#main {
+    transition: margin-left .5s;
+
+}
+.btn-circle.btn-lg {
+  width: 50px;
+  height: 50px;
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 25px;
+
+
+
+}
+.footer {
+  width: 50px;
+  bottom: 0;
+  right: 0;
+  position: fixed;
+  margin: 0px 30px 20px 0px;
+}
+.footermonth {
+  width: 50px;
+  right: 0;
+  position: fixed;
+  margin: 0px 30px 20px 0px;
 }
