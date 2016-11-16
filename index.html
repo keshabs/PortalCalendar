@@ -2,32 +2,31 @@
 <html>
 <head>
 	<title>Portal Calendar</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 
   <link rel="stylesheet" type="text/css" href="main.css">
 </head>
-<body class="container-fluid">
-	<div class="sidedrawer" id="drawer">
-		<a href="javascript:void(0)" class="closebtn" onclick="closeDrawer()">&times;</a>
-		<h1>Monday 11/14/2017</h1>
-		<p>12 PM - 2 PM</p>
-		<p>Portal Training</p>
-	</div>
+<body>
+
 <div id="main">
-	<div class="year well">
-    <p>November</p>
-		<div class="row text-center">
-			<div class="btn-group">
-			  <a role="button" class="btn btn-primary active" href="#">Month</a>
-			  <a role="button" class="btn btn-primary" href="week.html">Week</a>
-			  <a role="button" class="btn btn-primary" href="day.html">Day</a>
-			</div>
+	<div class="sidedrawer hide" id="drawer">
+			<h1>Monday 11/14/2017</h1>
+			<p>12 PM - 2 PM</p>
+			<p>Portal Training</p>
+			<button type="button" id="closedrawer">Close</button>
+	</div>
+	<div class="title">
+    <h1>November</h1>
+		<div class="navbar">
+
+			  <a href="#">Month</a>
+			  <a href="week.html">Week</a>
+			  <a href="day.html">Day</a>
+
 		</div>
   </div>
 
-		<table class="monthtable table table-bordered">
+		<table class="monthtable">
 			<thead class = "weekdays" >
 			<tr>
 				<th>Sunday</th>
@@ -43,7 +42,7 @@
 				<tr>
 					<td>
 						<p>1</p>
-						<button type="button" class="monthevent" onclick="openDrawer()"></button>
+						<button type="button" class="monthevent"></button>
 					</td>
 					<td>2</td>
 					<td>3</td>
@@ -86,64 +85,63 @@
 
 		</table>
 	</div>
-	<div class="footermonth">
-		<a href="#eventpopup" data-rel="popup" class="btn btn-warning btn-circle btn-lg"><span class="glyphicon glyphicon-plus"></span></a>
-
+	<div class="addeventbutton" id="add-btn">
+		<button type="button" class="btn-lg">+</button>
 	</div>
-		<div >
+
+		<div class="eventform hide">
 			<form>
-				<div class="form-group">
 					<h3>Calendar Event</h3>
-					<label for="eventtitle">Title</label>
-					<input type="text" placeholder="Title" class="form-control">
+					<div class="formtitle">
+						<label for="eventtitle">Title</label>
+						<input type="text" placeholder="Title">
+					</div>
+
 					<div class="eventdatetime">
 						<label for="eventdate">Date</label>
-						<input type="date" placeholder="Title" class="form-control">
+						<input type="date">
 
 						<label for="eventtime">Time</label>
-						<input type="time" placeholder="Title" class="form-control">
+						<input type="time" placeholder="Title">
 					</div>
 
 
-					<label for="eventrepetition">Repetition</label>
+
 					<div class="repetitionradio">
-						<input type="radio"  class="form-check-input">None
-						<input type="radio"  class="form-check-input">Weekly
-						<input type="radio"  class="form-check-input">Monthly
+						<label for="eventrepetition">Repetition</label>
+						<input type="radio">None
+						<input type="radio">Weekly
+						<input type="radio">Monthly
 					</div>
 					<div class="weeklycheckbox">
-						<input type="checkbox" class="form-check-input">S
-						<input type="checkbox" class="form-check-input">M
-						<input type="checkbox" class="form-check-input">T
-						<input type="checkbox" class="form-check-input">W
-						<input type="checkbox" class="form-check-input">Th
-						<input type="checkbox" class="form-check-input">F
-						<input type="checkbox" class="form-check-input">Sa
+						<input type="checkbox">S
+						<input type="checkbox">M
+						<input type="checkbox">T
+						<input type="checkbox">W
+						<input type="checkbox">Th
+						<input type="checkbox">F
+						<input type="checkbox">Sa
 					</div>
-					<label for="eventdescription">Description</label>
-					<textarea class="form-control" rows="5" id="eventdescriptions"></textarea>
+					<div class="eventdescription">
+						<label for="eventdescription">Description</label>
+						<textarea rows="5" id="eventdescriptions"></textarea>
+					</div>
+
+					<div class="form-btns">
+						<button type="button" id="createbutton">Create Event</button>
+						<button type="button" id="close-btn">Cancel</button>
+					</div>
 
 
-				</div>
 			</form>
 		</div>
 
 
-	<script>
-	function openDrawer(){
-		document.getElementById("drawer").style.width = "250px";
-    document.getElementById("main").style.marginLeft = "250px";
-	}
-	function closeDrawer(){
-		document.getElementById("drawer").style.width = "0";
-    document.getElementById("main").style.marginLeft= "0";
-	}
+<script src="javascript/addevent.js"></script>
+<script src="javascript/monthscript.js"></script>
+<script src="javascript/monthloader.js"></script>
 
-	</script>
-
-
-
-<!-- <script src="monthLoader.js"></script> -->
+</script>
 </body>
 
 </html>
