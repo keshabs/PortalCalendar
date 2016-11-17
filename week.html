@@ -12,13 +12,15 @@
   <body>
     <div id="main">
       <div class="title">
-        <h1>
-          Week of 11/14
+        <h1 id="weektitle">
+
         </h1>
+        <button type="button" id="prevweek"><</button>
+        <button type="button" id="nextweek">></button>
         <div class="navbar">
 
     			  <a href="index.html">Month</a>
-    			  <a href="#">Week</a>
+    			  <a href="week.html">Week</a>
     			  <a href="day.html">Day</a>
 
     		</div>
@@ -26,16 +28,7 @@
 
       <table class="weektable">
     		<thead  class = "weekdays">
-    		<tr>
-          <th>Time</th>
-    			<th>Sunday</th>
-    			<th>Monday</th>
-    			<th>Tuesday</th>
-    			<th>Wednesday</th>
-    			<th>Thursday</th>
-    			<th>Friday</th>
-    			<th>Saturday</th>
-    		</tr>
+
     		</thead>
         <tbody class="weektablebody">
           <tr>
@@ -337,5 +330,6 @@
 
 
       <script src="javascript/addevent.js"></script>
+      <script src="javascript/weekloader.js"></script>
   </body>
 </html>

@@ -1,11 +1,15 @@
 .title {
   margin: 10px 10px 10px 10px;
+  text-align: center;
 }
-.title h1 {
+.title #cmonth {
   text-align: center;
   font-size: 3em;
+  margin-bottom: 0px;
 }
-
+.title button {
+  margin-bottom: 10px;
+}
 .navbar {
  text-align: center;
 }
@@ -49,7 +53,7 @@
 
 .sidedrawer {
   height: 100%;
-  width: 250px;
+  width: 30%;
   position: fixed;
   top: 0;
   right: 0;
@@ -57,7 +61,11 @@
   background-color: lightgray;
   border-left: 1px solid black;
 
-  transition: width 1s ease;
+  transition: width .5s ease;
+
+}
+.slide {
+  width: 0%;
 
 }
 .sidedrawer h1, p {
@@ -89,6 +97,7 @@
 
 .weektable tr td, .daytable tr td {
   border: 1px solid black;
+  height: 30px;
 }
 .daytablehead #daytime {
   width: 10%;
@@ -136,4 +145,11 @@
 
 .weektablebody tr, .daytablebody tr {
   height: 25px;
+}
+
+.prevnext{
+  font-size: 20px;
+  text-decoration: underline;
+  background: none;
+  border: none;
 }
