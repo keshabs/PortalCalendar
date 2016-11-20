@@ -9,13 +9,21 @@ var daysinmonth = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
 var calendarbody = document.querySelector("#main");
 
-var loadCalendar = function(year,month){
+events = {};
+if(localStorage.getItem("events") != null){
+  events = JSON.parse(localStorage.getItem("events"));
+}
+console.log(events);
+
+var loadCalendar = function(year,month) {
   calendarbody.innerHTML = "";
   var html = "";
   var t = new Date(year,month,1);
   var startday = t.getDay();
 
   var d = 1;
+
+
 
 
   document.querySelector("#prevmonth").innerHTML = month == 0 ? months[11] : months[(month-1)%12];
@@ -33,37 +41,44 @@ var loadCalendar = function(year,month){
   for(var i = 0; i < 5; i++){
     html += '<tr>';
     for(var j = 0; j < 7; j++){
-      if((i==0 && j<startday)||d>daysinmonth[month]){
+
+      if((i==0 && j<startday)||month != (t.getMonth())){
         html += '<td></td>';
       }else{
-        html += '<td><p>'+ d++ +'</p>';
-        if(d-1 == 1){
+        var a = t.getDate() < 10 ? "0"+t.getDate() : t.getDate();
+        var d = t.getFullYear()+"-"+(t.getMonth()+1)+"-"+ a;
+        html += '<td><p data-date="'+d+'">'+ t.getDate() +'</p>';
+
+        if(events.hasOwnProperty(d))
           html += '<button type="button" class="monthevent"></button>';
-        }
         html += '</td>';
+        t.setDate(t.getDate()+1);
       }
+
     }
     html += '</tr>';
-    if(d>daysinmonth[month]){
+    if(month != (t.getMonth())){
       break;
     }
 
   }
+
   html += '</tbody></table>';
   calendarbody.innerHTML += html;
-  
-  var drawer = document.querySelector(".monthevent");
+  var drawer = document.querySelectorAll(".monthevent");
   var drawerclsbtn = document.querySelector("#closedrawer");
 
   var drawerClassList = document.querySelector(".sidedrawer").classList;
 
-  drawer.addEventListener('click',function(e){
-    console.log(e);
+  drawer.forEach(function(el){
+    el.addEventListener('click',function(e){
+      drawerClassList.remove("hide");
+      setTimeout(function(){drawerClassList.remove("slide");},10);
 
-    drawerClassList.remove("hide");
-    setTimeout(function(){drawerClassList.remove("slide");},10);
+    });
 
   });
+
 
   drawerclsbtn.addEventListener('click',function(e){
 
@@ -72,6 +87,8 @@ var loadCalendar = function(year,month){
 
 
   });
+
+
 }
 loadCalendar(currentyear,currentmonth);
 var prevmnth = document.querySelector("#prevmonth");
@@ -83,7 +100,7 @@ prevmnth.addEventListener('click',function(e){
     currentmonth = 11;
     currentyear--;
   }
-  console.log(currentyear+" "+currentmonth);
+
   loadCalendar(currentyear,currentmonth);
 });
 nextmnth.addEventListener('click',function(e){
