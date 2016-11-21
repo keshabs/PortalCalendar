@@ -23,32 +23,34 @@
   width: 100%;
   border: 1px solid black;
   border-collapse: collapse;
+  table-layout: fixed;
+  height: 100%;
 
 }
 
-.weekdays th , .daytable th{
-  height: 25px;
+.weekdays th , .daytable th {
   background-color: lightblue;
   text-align: center;
   border: 1px solid black;
+
 }
 .monthday tr td{
   border: 1px solid black;
-  padding: 20px;
   text-align: center;
   font-size: 1.7em;
-  
+}
+.monthday tr td:hover {
+  cursor: pointer;
 }
 .monthday tr {
   height: 100px;
 }
 
-.monthevent {
-  background-color:green;
-  border: none;
-  height: 15px;
-  width: 70%;
+
+.event {
+  background-color: lightgrey;
 }
+
 
 .sidedrawer {
   height: 100%;
@@ -123,8 +125,8 @@
 
 }
 .eventform form div {
-  margin-top: 10px;
   margin-left: 20px;
+  margin-bottom: 10px;
 }
 .eventform form h3 {
   text-align: center;

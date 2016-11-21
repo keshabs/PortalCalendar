@@ -35,38 +35,48 @@
 	</div>
 
 		<div class="eventform hide">
-			<form>
+			<form novalidate>
 					<h3>Calendar Event</h3>
 					<div class="formtitle">
 						<label for="eventtitle">Title</label>
-						<input type="text" placeholder="Title" id="eventtitle">
+						<input type="text" placeholder="Title" id="eventtitle" required>
 					</div>
 
 					<div class="eventdatetime">
-						<label for="eventdate">Date</label>
-						<input type="date" id="eventdate">
 
-						<label for="eventtime">Time</label>
-						<input type="time" id="eventtime">
+							<label for="eventdate">Date</label>
+							<input type="date" id="eventdate" required>
+
+
+						<label for="starttime"><br>Start Time</label>
+						<input type="time" id="eventstarttime" required>
+
+						<label for="endtime">End Time</label>
+						<input type="time" id="eventendtime" required>
 					</div>
 
 
 
 					<div class="repetitionradio">
 						<label for="eventrepetition">Repetition</label>
-						<input type="radio">None
-						<input type="radio">Weekly
-						<input type="radio">Monthly
+						<input type="radio" name="repeat" value="none" checked>None
+						<input type="radio" name="repeat" value="weekly">Weekly
+						<input type="radio" name="repeat" value="monthly">Monthly
 					</div>
-					<div class="weeklycheckbox">
-						<input type="checkbox">S
-						<input type="checkbox">M
-						<input type="checkbox">T
-						<input type="checkbox">W
-						<input type="checkbox">Th
-						<input type="checkbox">F
-						<input type="checkbox">Sa
+					<div class="weeklycheckbox hide">
+						<input type="checkbox" class="weekrepeat">S
+						<input type="checkbox" class="weekrepeat">M
+						<input type="checkbox" class="weekrepeat">T
+						<input type="checkbox" class="weekrepeat">W
+						<input type="checkbox" class="weekrepeat">Th
+						<input type="checkbox" class="weekrepeat">F
+						<input type="checkbox" class="weekrepeat">Sa
 					</div>
+					<div class="repetitiondate hide">
+						<label for="endeventdate">End Date</label>
+						<input type="date" id="eventenddate">
+					</div>
+
 					<div class="eventdescription">
 						<label for="eventdescription">Description</label>
 						<textarea rows="5" id="eventdescription"></textarea>
