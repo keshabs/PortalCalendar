@@ -4,7 +4,9 @@
 
 var events = {};
 
-function newevent(i,t,d,tm,etm,r,wr,ed,ds){
+var colors = ["#B6B6B4","#98AFC7","#3090C7","#659EC7","#82CAFA","#AFDCEC","#4E8975","#F5F5DC","#F3E5AB","#966F33","#966F33","#E56E94"];
+
+function newevent(i,t,d,tm,etm,r,wr,ed,ds,c){
   this.id = i;
   this.title = t;
   this.date = d;
@@ -14,6 +16,7 @@ function newevent(i,t,d,tm,etm,r,wr,ed,ds){
   this.weekrep = wr;
   this.enddate = ed;
   this.description = ds;
+  this.color = c;
 }
 
 
@@ -92,7 +95,7 @@ createEventBtn.addEventListener('click',function(e){
       }
       var id = events["ids"]++;
       var e = new newevent(id,title.value,ev,starttime.value,endtime.value,repeat,weekrepeat,
-        end,description.value);
+        end,description.value,colors[Math.floor((Math.random()*12)+1)]);
 
       console.log(e);
       var event = [];

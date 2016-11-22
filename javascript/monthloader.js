@@ -13,7 +13,7 @@ events = {};
 if(localStorage.getItem("events") != null){
   events = JSON.parse(localStorage.getItem("events"));
 }
-console.log(events);
+//console.log(events);
 
 var loadCalendar = function(year,month) {
 
@@ -50,7 +50,7 @@ var loadCalendar = function(year,month) {
         var d = t.toLocaleDateString();
 
         if(monthevents.hasOwnProperty(d) && monthevents[d].length > 0){
-          html += '<td class = "event monthevent" data-date="'+d+'"><div>'+ t.getDate()+'</div>';
+          html += '<td class = "event monthevent" data-date="'+d+'" + style="background-color:'+monthevents[d][0].color +';" ><div>'+ t.getDate()+'</div>';
         }
         else
           html += '<td class = "monthevent" data-date="'+d+'"><div>'+ t.getDate()+'</div>';
@@ -76,7 +76,9 @@ var loadCalendar = function(year,month) {
 
   drawer.forEach(function(el){
     el.addEventListener('click',function(e){
-      //console.log(this.dataset.date);
+      console.log(this.dataset.date);
+      //console.log(events);
+      loaddrawer(this.dataset.date,monthevents[this.dataset.date]);
       drawerClassList.remove("hide");
       setTimeout(function(){drawerClassList.remove("slide");},10);
 
@@ -132,9 +134,19 @@ function getEvents(mdate){
     var dayEvents = [];
     key = d.toLocaleDateString();
     if(events.hasOwnProperty(key)){
-      dayEvents = events[key];
+      var temp = events[key].slice();
+      for(var ev = 0; ev < temp.length; ev++){
+        if(temp[ev].repeat === "none"){
+          dayEvents.push(temp[ev]);
+        }
+      }
+
     }
+
+
     e[key] = dayEvents;
+    //console.log(e[key]);
+
     d.setDate(d.getDate()+1);
 
   }
@@ -154,7 +166,7 @@ function getEvents(mdate){
     var z = new Date(r[1]);
 
     var dayevents = [];
-    if(x >= y && x <= z ){
+    if(x >= y || x <= z ){
       dayevents = events[r[0]];
     }
     for(var j = 0; j < dayevents.length; j++){
@@ -177,7 +189,7 @@ function getEvents(mdate){
             repdate.setDate(repdate.getDate()+7*week);
 
             if(repdate<=z){
-              if(repdate.getMonth()===month){
+              if(repdate.getMonth()===month && repdate >= y){
                 eventid.parent = y.toLocaleDateString();
                 e[repdate.toLocaleDateString()].push(eventid);
 
@@ -202,6 +214,22 @@ function getEvents(mdate){
 
   }
 
-
   return e;
+}
+
+function loaddrawer(date,dateevents){
+  var drawer = document.querySelector("#drawercontent");
+  var html = "";
+  html += '<h1>'+weekdays[new Date(date).getDay()]+' '+ date +'</h1>';
+  if(dateevents.length < 1){
+    html += '<p>No Events</p>';
+  } else {
+    for(var i = 0; i < dateevents.length; i++){
+
+        html += '<p>'+dateevents[i].title+'</p>';
+  			html += '<p>'+dateevents[i].starttime+'-'+dateevents[i].endtime+'</p>';
+
+    }
+  }
+  drawer.innerHTML = html;
 }
