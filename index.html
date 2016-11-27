@@ -5,24 +5,25 @@
 
 
   <link rel="stylesheet" type="text/css" href="main.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </head>
 <body>
-	<div class="sidedrawer slide hide " id="drawer">
+	<div class="sidedrawer hide" id="event-drawer">
 			<!-- <h1>Monday 11/14/2017</h1>
 			<p>12 PM - 2 PM</p>
 			<p>Portal Training</p> -->
 			<div id="drawercontent">
 
 			</div>
-			<button type="button" id="closedrawer">Close</button>
+			<button type="button" id="drawer-cls-btn">Close</button>
 	</div>
 	<div class="title">
 		<div>
-			<button type="button" id = "prevmonth" class="prevnext">pMonth</button>
-			<span id="cmonth">cMonth</span>
-			<button type="button" id="nextmonth" class="prevnext">nMonth</button>
+			<button type="button" class="btn-prev-mnth"><</button>
+			<span id="cmonth">cMonth</span> <span id="cyear">cYear</span>
+			<button type="button" class="btn-nxt-mnth">></button>
 		</div>
-			<h2 id="cyear">cYear</h2>
+
 			<div class="navbar">
 				<a href=".">Month</a>
 				<a href="week.html">Week</a>
@@ -30,7 +31,7 @@
 			</div>
 	</div>
 <div id="main">
-	</div>
+</div>
 
 
 	<div class="addeventbutton" id="add-btn">
@@ -38,7 +39,7 @@
 	</div>
 
 		<div class="eventform hide">
-			<form novalidate>
+			<form>
 					<h3>Calendar Event</h3>
 					<div class="formtitle">
 						<label for="eventtitle">Title</label>
@@ -62,18 +63,18 @@
 
 					<div class="repetitionradio">
 						<label for="eventrepetition">Repetition</label>
-						<input type="radio" name="repeat" value="none" checked>None
-						<input type="radio" name="repeat" value="weekly">Weekly
-						<input type="radio" name="repeat" value="monthly">Monthly
+						<input type="radio" name="repeat" value="none" checked>None</input>
+						<input type="radio" name="repeat" value="weekly">Weekly</input>
+						<input type="radio" name="repeat" value="monthly">Monthly</input>
 					</div>
 					<div class="weeklycheckbox hide">
-						<input type="checkbox" class="weekrepeat">S
-						<input type="checkbox" class="weekrepeat">M
-						<input type="checkbox" class="weekrepeat">T
-						<input type="checkbox" class="weekrepeat">W
-						<input type="checkbox" class="weekrepeat">Th
-						<input type="checkbox" class="weekrepeat">F
-						<input type="checkbox" class="weekrepeat">Sa
+						<input type="checkbox" class="weekrepeat">S</input>
+						<input type="checkbox" class="weekrepeat">M</input>
+						<input type="checkbox" class="weekrepeat">T</input>
+						<input type="checkbox" class="weekrepeat">W</input>
+						<input type="checkbox" class="weekrepeat">Th</input>
+						<input type="checkbox" class="weekrepeat">F</input>
+						<input type="checkbox" class="weekrepeat">Sa</input>
 					</div>
 					<div class="repetitiondate hide">
 						<label for="endeventdate">End Date</label>
@@ -86,19 +87,16 @@
 					</div>
 
 					<div class="form-btns">
-						<button type="button" id="createbutton">Create Event</button>
+						<button type="submit" id="createbutton">Create Event</button>
 						<button type="button" id="close-btn">Cancel</button>
 					</div>
-
 
 			</form>
 		</div>
 
 
 
-<script src="javascript/monthloader.js"></script>
-<script src="javascript/addevent.js"></script>
-<script src="javascript/monthscript.js"></script>
+<script src="javascript/monthloader_v1.js"></script>
 
 
 </body>

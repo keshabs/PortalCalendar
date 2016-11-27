@@ -4,20 +4,9 @@
 
 var events = {};
 
-var colors = ["#B6B6B4","#98AFC7","#3090C7","#659EC7","#82CAFA","#AFDCEC","#4E8975","#F5F5DC","#F3E5AB","#966F33","#966F33","#E56E94"];
 
-function newevent(i,t,d,tm,etm,r,wr,ed,ds,c){
-  this.id = i;
-  this.title = t;
-  this.date = d;
-  this.starttime = tm;
-  this.endtime = etm;
-  this.repeat = r;
-  this.weekrep = wr;
-  this.enddate = ed;
-  this.description = ds;
-  this.color = c;
-}
+const colors = ["#B6B6B4","#98AFC7","#3090C7","#659EC7","#82CAFA","#AFDCEC","#4E8975","#F5F5DC","#F3E5AB","#966F33","#966F33","#E56E94"];
+
 
 
 if(localStorage.getItem("events") != null){
