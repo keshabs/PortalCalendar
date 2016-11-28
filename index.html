@@ -8,15 +8,8 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </head>
 <body>
-	<div class="sidedrawer hide" id="event-drawer">
-			<!-- <h1>Monday 11/14/2017</h1>
-			<p>12 PM - 2 PM</p>
-			<p>Portal Training</p> -->
-			<div id="drawercontent">
 
-			</div>
-			<button type="button" id="drawer-cls-btn">Close</button>
-	</div>
+
 	<div class="title">
 		<div>
 			<button type="button" class="btn-prev-mnth"><</button>
@@ -30,69 +23,72 @@
 				<a href="day.html">Day</a>
 			</div>
 	</div>
-<div id="main">
-</div>
-
-
+	<div class="sidedrawer hide slide" id="event-drawer">
+			<div id="drawercontent">
+			</div>
+			<p id="drawer-cls-btn"> &#x2613; </p>
+	</div>
+	<div id="main">
+	</div>
 	<div class="addeventbutton" id="add-btn">
 		<button type="button" class="btn-lg">+</button>
 	</div>
+	<div class="eventform hide">
+		<form id="event-form">
+				<h3>Calendar Event</h3>
 
-		<div class="eventform hide">
-			<form>
-					<h3>Calendar Event</h3>
-					<div class="formtitle">
-						<label for="eventtitle">Title</label>
-						<input type="text" placeholder="Title" id="eventtitle" required>
-					</div>
+				<div class="formtitle">
+					<label for="eventtitle">Title</label>
+					<input type="text" placeholder="Title" id="eventtitle" name="Title" required>
+				</div>
 
-					<div class="eventdatetime">
+				<div class="eventdatetime">
 
-							<label for="eventdate">Date</label>
-							<input type="date" id="eventdate" required>
-
-
-						<label for="starttime"><br>Start Time</label>
-						<input type="time" id="eventstarttime" required>
-
-						<label for="endtime">End Time</label>
-						<input type="time" id="eventendtime" required>
-					</div>
+						<label for="eventdate">Date</label>
+						<input type="date" id="eventdate" name="Date" required>
 
 
+					<label for="starttime"><br>Start Time</label>
+					<input type="time" id="eventstarttime" name="StartTime" required>
 
-					<div class="repetitionradio">
-						<label for="eventrepetition">Repetition</label>
-						<input type="radio" name="repeat" value="none" checked>None</input>
-						<input type="radio" name="repeat" value="weekly">Weekly</input>
-						<input type="radio" name="repeat" value="monthly">Monthly</input>
-					</div>
-					<div class="weeklycheckbox hide">
-						<input type="checkbox" class="weekrepeat">S</input>
-						<input type="checkbox" class="weekrepeat">M</input>
-						<input type="checkbox" class="weekrepeat">T</input>
-						<input type="checkbox" class="weekrepeat">W</input>
-						<input type="checkbox" class="weekrepeat">Th</input>
-						<input type="checkbox" class="weekrepeat">F</input>
-						<input type="checkbox" class="weekrepeat">Sa</input>
-					</div>
-					<div class="repetitiondate hide">
-						<label for="endeventdate">End Date</label>
-						<input type="date" id="eventenddate">
-					</div>
+					<label for="endtime">End Time</label>
+					<input type="time" id="eventendtime" name="EndTime" required>
+				</div>
 
-					<div class="eventdescription">
-						<label for="eventdescription">Description</label>
-						<textarea rows="5" id="eventdescription"></textarea>
-					</div>
 
-					<div class="form-btns">
-						<button type="submit" id="createbutton">Create Event</button>
-						<button type="button" id="close-btn">Cancel</button>
-					</div>
 
-			</form>
-		</div>
+				<div class="repetitionradio">
+					<label for="eventrepetition">Repetition</label>
+					<input type="radio" name="repeat" value="none" checked>None</input>
+					<input type="radio" name="repeat" value="weekly">Weekly</input>
+					<input type="radio" name="repeat" value="monthly">Monthly</input>
+				</div>
+				<div class="weeklycheckbox hide">
+					<input type="checkbox" class="weekrepeat" name="S">S</input>
+					<input type="checkbox" class="weekrepeat" name="M">M</input>
+					<input type="checkbox" class="weekrepeat" name="T">T</input>
+					<input type="checkbox" class="weekrepeat" name="W">W</input>
+					<input type="checkbox" class="weekrepeat" name="Th">Th</input>
+					<input type="checkbox" class="weekrepeat" name="F">F</input>
+					<input type="checkbox" class="weekrepeat" name="Sa">Sa</input>
+				</div>
+				<div class="repetitiondate hide">
+					<label for="endeventdate" name="EndDate">End Date</label>
+					<input type="date" id="eventenddate">
+				</div>
+
+				<div class="eventdescription">
+					<label for="eventdescription" name="Description">Description</label>
+					<textarea rows="5" id="eventdescription"></textarea>
+				</div>
+
+				<div class="form-btns">
+					<button type="button" id="createbutton">Create Event</button>
+					<button type="button" id="close-btn">Cancel</button>
+				</div>
+
+		</form>
+	</div>
 
 
 

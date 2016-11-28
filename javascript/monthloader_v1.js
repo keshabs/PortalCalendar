@@ -1,27 +1,6 @@
 $(document).ready(function(){
 
-
-  //
-  // $.ajax( 'http://thiman.me:1337/keshab/', {
-  //   type: 'POST',
-  //   data: {{title:"training",date:"sdate"}] },
-  //   success: function( resp ) {
-  //     console.log( resp );
-  //   },
-  //   error: function( req, status, err ) {
-  //     console.log( 'something went wrong', status, err );
-  //   }
-  // });
-  // $.ajax( 'http://thiman.me:1337/keshab/5834a34cf9411adb236ae190/', {
-  //   type: 'PATCH',
-  //   data: { title: 'using jquery ajax patch', startDate: 'somedate' },
-  //   success: function( resp ) {
-  //     console.log( resp );
-  //   },
-  //   error: function( req, status, err ) {
-  //     console.log( 'something went wrong', status, err );
-  //   }
-  // });
+  var monthevents = {};
 
   var date = new Date();
   var currentday = date.getDate();
@@ -29,22 +8,23 @@ $(document).ready(function(){
   var currentyear = date.getFullYear();
 
   var weekdays = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
-  var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
 
-  var calendarbody = document.querySelector("#main");
+  var events = null;
 
-  var events = {};
   $.ajax( 'http://thiman.me:1337/keshab', {
     type: 'GET',
     dataType: 'json',
     success: function( resp ) {
       events = resp;
+      //console.log(events);
+      loadCalendar(currentyear,currentmonth);
     },
     error: function( req, status, err ) {
       console.log( 'something went wrong', status, err );
     }
   });
+
 
 
   var loadCalendar = function(year,month) {
@@ -56,17 +36,13 @@ $(document).ready(function(){
 
     var lastmonthday = new Date(year,month,0).getDate()-startday+1;
     var nextmnth = 1;
-    console.log(lastmonthday);
 
     var d = 1;
     //console.log(t.toLocaleDateString());
-    var monthevents = getEvents(t.toLocaleDateString());
+    //monthevents = getEvents(t.toLocaleDateString());
 
-
-
-
-    // document.querySelector("#cmonth").innerHTML = new Intl.DateTimeFormat('en-US',{month: 'long'}).format(t);
-    // document.querySelector("#cyear").innerHTML = year;
+    if(events != null) monthevents = getEvents(t.toLocaleDateString());
+    //console.log(monthevents);
 
     $("#cmonth").html(new Intl.DateTimeFormat('en-US',{month: 'long'}).format(t));
     $("#cyear").html(year);
@@ -90,12 +66,14 @@ $(document).ready(function(){
           }
         }else{
           var d = t.toLocaleDateString();
+          var dateid = t.toISOString().slice(0,10);
 
-          if(monthevents.hasOwnProperty(d) && monthevents[d].length > 0){
-            html += '<td class = "event monthevent" data-date="'+d+'" + style="background-color:'+monthevents[d][0].color +';" ><div>'+ t.getDate()+'</div>';
+
+          if(monthevents.hasOwnProperty(dateid) && monthevents[dateid].length > 0){
+            html += '<td class = "event monthevent" data-date="'+dateid+'" id="e'+dateid+'" ><div>'+ t.getDate()+'</div>';
           }
           else
-            html += '<td class = "monthevent" data-date="'+d+'"><div>'+ t.getDate()+'</div>';
+            html += '<td class = "monthevent" data-date="'+dateid+'" id="e'+dateid+'"><div>'+ t.getDate()+'</div>';
           html += '</td>';
           t.setDate(t.getDate()+1);
         }
@@ -111,61 +89,61 @@ $(document).ready(function(){
     html += '</tbody></table>';
     $("#main").html(html);
 
-    var d = $("#event-drawer");
-    $(".monthevent").click(function(){
+    // var d = $("#event-drawer");
+    // $(".monthevent").click(function(){
+    //
+    //   d.removeClass(".hide");
+    //   d.animate({width:'toggle'},500);
+    //
+    //
+    //   loaddrawer(this.dataset.date);
+    //   var date = this.dataset.date;
+    //   $(".deleteevent").click(function(){
+    //     deleteevent(date,this.dataset.id);
+    //   });
+    //
+    // });
+    //
+    // $("#drawer-cls-btn").click(function(){
+    //   d.animate({width:'toggle'},500);
+    // });
+    var drawer = document.querySelectorAll(".monthevent");
 
-      d.removeClass(".hide")
-      d.animate({width:'toggle'},500);
 
-      loaddrawer(this.dataset.date,monthevents[this.dataset.date]);
+    var drawerClassList = document.querySelector(".sidedrawer").classList;
 
-      console.log(this.dataset.date);
+    drawer.forEach(function(el){
+      el.addEventListener('click',function(e){
+        loaddrawer(this.dataset.date);
+
+        var date = this.dataset.date;
+
+        drawerClassList.remove("hide");
+        setTimeout(function(){drawerClassList.remove("slide");},10);
+
+      });
+
     });
 
-    $("#drawer-cls-btn").click(function(){
-      d.animate({width:'toggle'},500);
+  var drawerclsbtn = document.querySelector("#drawer-cls-btn");
+  drawerclsbtn.addEventListener('click',function(e){
+
+      drawerClassList.add("slide");
+      setTimeout(function(){drawerClassList.add("hide");},500);
+
+
     });
-  //   var drawer = document.querySelectorAll(".monthevent");
-  //   var drawerclsbtn = document.querySelector("#closedrawer");
-  //
-  //   var drawerClassList = document.querySelector(".sidedrawer").classList;
-  //
-  //   drawer.forEach(function(el){
-  //     el.addEventListener('click',function(e){
-  //       //console.log(this.dataset.date);
-  //       //console.log(events);
-  //       loaddrawer(this.dataset.date,monthevents[this.dataset.date]);
-  //       var drawerdelete = document.querySelectorAll(".deleteevent");
-  //
-  //       drawerdelete.forEach(function(el){
-  //         el.addEventListener('click',function(e){
-  //             deleteevent(this.dataset.date);
-  //         });
-  //       });
-  //       drawerClassList.remove("hide");
-  //       setTimeout(function(){drawerClassList.remove("slide");},10);
-  //
-  //     });
-  //
-  //   });
-  //
-  //
-  // drawerclsbtn.addEventListener('click',function(e){
-  //
-  //     drawerClassList.add("slide");
-  //     setTimeout(function(){drawerClassList.add("hide");},500);
-  //
-  //
-  //   });
-  
+
+
 
 
 
   }
+
   loadCalendar(currentyear,currentmonth);
-  //var prevmnth = document.querySelector("#prevmonth");
-  //var nextmnth = document.querySelector("#nextmonth");
+
   $(".btn-prev-mnth").click(function(){
+    console.log("here");
     currentmonth--;
     if(currentmonth < 0){
       currentmonth = 11;
@@ -184,35 +162,143 @@ $(document).ready(function(){
     loadCalendar(currentyear,currentmonth);
   });
 
-
-
-
   function getEvents(mdate){
     var e = {};
 
+    var d = new Date(mdate);
+    var month = d.getMonth();
+
+    var ev = events.data;
+
+    for(var i = 0; i < ev.length; i++){
+
+      if(ev[i].Date.substring(5,7) == month+1){
+        if(e.hasOwnProperty(ev[i].Date))
+          e[ev[i].Date].push(ev[i]);
+        else{
+          e[ev[i].Date] = [];
+          e[ev[i].Date].push(ev[i]);
+        }
+
+      }
+
+    }
+    //console.log(e);
     return e;
+
   }
 
-  function loaddrawer(date,dateevents){
+  function loaddrawer(date){
   //  var drawer = document.querySelector("#drawercontent");
     var html = "";
-    html += '<h1>'+weekdays[new Date(date).getDay()]+' '+ date +'</h1>';
-    if( typeof dataevents || dateevents.length < 1){
+
+    html += '<h1 id="drawertitle">'+weekdays[new Date(date).getDay()+1]+' '+ date +'</h1>';
+
+    if( !monthevents.hasOwnProperty(date) || monthevents[date].length < 1){
       html += '<p>No Events</p>';
     } else {
+      var dateevents = monthevents[date];
       for(var i = 0; i < dateevents.length; i++){
-          var datadate = dateevents[i].hasOwnProperty("parent") ? dateevents[i].parent+"-"+dateevents[i].id : date +"-"+dateevents[i].id;
-          html += '<div id="'+datadate+'">';
-          html += '<p>'+dateevents[i].title+'<span class="deleteevent" data-date="'+datadate+'">\u00D7</span></p>';
-    			html += '<p>'+dateevents[i].starttime+'-'+dateevents[i].endtime+'</p></div>';
+          html += '<div><p>'+dateevents[i].Title+'<span class="deleteevent" data-id="'+dateevents[i]._id+'">\u00D7</span></p>';
+    			html += '<p>'+dateevents[i].StartTime+'-'+dateevents[i].EndTime+'</p></div>';
 
       }
     }
     $("#drawercontent").html(html);
+    var drawerdelete = document.querySelectorAll(".deleteevent");
+
+    drawerdelete.forEach(function(el){
+      el.addEventListener('click',function(e){
+          deleteevent(date,this.dataset.id);
+      });
+    });
   }
 
-  function deleteevent(drawerevent){
+  function deleteevent(date,id){
 
+
+    $.ajax( 'http://thiman.me:1337/keshab/'+id, {
+      type: 'DELETE',
+      success: function( resp ) {
+        console.log( "deleted" );
+
+        var temp = monthevents[date];
+        for(let i = 0; i < temp.length; i++){
+          if(temp[i]._id === id){
+            temp.splice(i,1);
+            break;
+          }
+        }
+        if(monthevents[date].length < 1)
+          $("#e"+date).removeClass("event");
+        loaddrawer(date);
+
+        for(let i = 0; i < events.data.length; i++){
+          if(events.data[i]._id === id){
+            events.data.splice(i,1);
+            break;
+          }
+        }
+
+      },
+      error: function( req, status, err ) {
+        console.log( 'something went wrong', status, err );
+      }
+    });
 
   }
+
+  var eventform = $(".eventform");
+  var outsideform = $("#main");
+
+  $("#add-btn").click(function(){
+    eventform.removeClass("hide");
+    outsideform.addClass("dark");
+  });
+  outsideform.click(function(){
+    hideForm();
+  });
+  $("#close-btn").click(function(){
+    hideForm();
+  })
+  function hideForm(){
+    eventform.addClass("hide");
+    outsideform.removeClass("dark");
+  }
+
+  $("#createbutton").click(function(e){
+    //console.log($("#event-form").serializeArray());
+    var d = $("#event-form").serializeArray();
+
+    $.ajax( 'http://thiman.me:1337/keshab', {
+      type: 'POST',
+      dataType: 'json',
+      data: d,
+      success: function( resp ) {
+        console.log(resp.data);
+        events.data.push(resp.data);
+        if(monthevents.hasOwnProperty(resp.data.Date))
+          monthevents[resp.data.Date].push(resp.data);
+        else{
+          monthevents[resp.data.Date] = [];
+          monthevents[resp.data.Date].push(resp.data);
+        }
+        $("#e"+d[1]["value"]).addClass("event");
+        console.log(monthevents);
+        document.getElementById("event-form").reset();
+      },
+      error: function( req, status, err ) {
+        console.log( 'something went wrong', status, err );
+      }
+    });
+
+    hideForm();
+
+  });
+
+
+
+
+
+
 });
