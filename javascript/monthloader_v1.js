@@ -12,10 +12,13 @@ $(document).ready(function(){
 
   var events = null;
 
-  $.ajax( 'http://thiman.me:1337/keshab', {
+  $.ajax( 'http://localhost:3000/events', {
     type: 'GET',
     dataType: 'json',
     success: function( resp ) {
+
+      console.log(resp);
+
       events = resp;
       //console.log(events);
       loadCalendar(currentyear,currentmonth);
@@ -89,24 +92,6 @@ $(document).ready(function(){
     html += '</tbody></table>';
     $("#main").html(html);
 
-    // var d = $("#event-drawer");
-    // $(".monthevent").click(function(){
-    //
-    //   d.removeClass(".hide");
-    //   d.animate({width:'toggle'},500);
-    //
-    //
-    //   loaddrawer(this.dataset.date);
-    //   var date = this.dataset.date;
-    //   $(".deleteevent").click(function(){
-    //     deleteevent(date,this.dataset.id);
-    //   });
-    //
-    // });
-    //
-    // $("#drawer-cls-btn").click(function(){
-    //   d.animate({width:'toggle'},500);
-    // });
     var drawer = document.querySelectorAll(".monthevent");
 
 
@@ -168,16 +153,16 @@ $(document).ready(function(){
     var d = new Date(mdate);
     var month = d.getMonth();
 
-    var ev = events.data;
+    var ev = events;
 
     for(var i = 0; i < ev.length; i++){
 
-      if(ev[i].Date.substring(5,7) == month+1){
-        if(e.hasOwnProperty(ev[i].Date))
-          e[ev[i].Date].push(ev[i]);
+      if(ev[i].StartDate.substring(5,7) == month+1){
+        if(e.hasOwnProperty(ev[i].StartDate))
+          e[ev[i].StartDate].push(ev[i]);
         else{
-          e[ev[i].Date] = [];
-          e[ev[i].Date].push(ev[i]);
+          e[ev[i].StartDate] = [];
+          e[ev[i].StartDate].push(ev[i]);
         }
 
       }
@@ -233,9 +218,9 @@ $(document).ready(function(){
           $("#e"+date).removeClass("event");
         loaddrawer(date);
 
-        for(let i = 0; i < events.data.length; i++){
-          if(events.data[i]._id === id){
-            events.data.splice(i,1);
+        for(let i = 0; i < events.length; i++){
+          if(events[i]._id === id){
+            events.splice(i,1);
             break;
           }
         }
@@ -270,21 +255,21 @@ $(document).ready(function(){
     //console.log($("#event-form").serializeArray());
     var d = $("#event-form").serializeArray();
 
-    $.ajax( 'http://thiman.me:1337/keshab', {
+    $.ajax( 'http://localhost:3000/events', {
       type: 'POST',
       dataType: 'json',
       data: d,
       success: function( resp ) {
-        console.log(resp.data);
-        events.data.push(resp.data);
-        if(monthevents.hasOwnProperty(resp.data.Date))
-          monthevents[resp.data.Date].push(resp.data);
+        console.log(resp);
+        events.push(resp);
+        if(monthevents.hasOwnProperty(resp.StartDate))
+          monthevents[resp.StartDate].push(resp);
         else{
-          monthevents[resp.data.Date] = [];
-          monthevents[resp.data.Date].push(resp.data);
+          monthevents[resp.StartDate] = [];
+          monthevents[resp.StartDate].push(resp);
         }
         $("#e"+d[1]["value"]).addClass("event");
-        console.log(monthevents);
+        //console.log(monthevents);
         document.getElementById("event-form").reset();
       },
       error: function( req, status, err ) {
