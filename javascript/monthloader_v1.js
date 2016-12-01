@@ -10,21 +10,26 @@ $(document).ready(function(){
   var weekdays = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
 
 
-  var events = null;
+  var events = [];
+
+
 
   $.ajax( 'http://localhost:3000/events', {
     type: 'GET',
     dataType: 'json',
     success: function( resp ) {
 
-      console.log(resp);
+      if(resp.hasOwnProperty("error")){
+        alert(resp.error);
+      }else {
 
       events = resp;
-      //console.log(events);
+
       loadCalendar(currentyear,currentmonth);
+    }
     },
     error: function( req, status, err ) {
-      console.log( 'something went wrong', status, err );
+      console.log( 'something went wrong - get request', status, err );
     }
   });
 
@@ -68,7 +73,6 @@ $(document).ready(function(){
             html += '<td class="faded">'+(nextmnth++)+'</td>';
           }
         }else{
-          var d = t.toLocaleDateString();
           var dateid = t.toISOString().slice(0,10);
 
 
@@ -128,7 +132,7 @@ $(document).ready(function(){
   loadCalendar(currentyear,currentmonth);
 
   $(".btn-prev-mnth").click(function(){
-    console.log("here");
+
     currentmonth--;
     if(currentmonth < 0){
       currentmonth = 11;
@@ -157,12 +161,14 @@ $(document).ready(function(){
 
     for(var i = 0; i < ev.length; i++){
 
-      if(ev[i].StartDate.substring(5,7) == month+1){
-        if(e.hasOwnProperty(ev[i].StartDate))
-          e[ev[i].StartDate].push(ev[i]);
+      var startdate = ev[i].StartDate.slice(0,10);
+
+      if(startdate.substring(5,7) == month+1){
+        if(e.hasOwnProperty(startdate))
+          e[startdate].push(ev[i]);
         else{
-          e[ev[i].StartDate] = [];
-          e[ev[i].StartDate].push(ev[i]);
+          e[startdate] = [];
+          e[startdate].push(ev[i]);
         }
 
       }
@@ -185,8 +191,7 @@ $(document).ready(function(){
       var dateevents = monthevents[date];
       for(var i = 0; i < dateevents.length; i++){
           html += '<div><p>'+dateevents[i].Title+'<span class="deleteevent" data-id="'+dateevents[i]._id+'">\u00D7</span></p>';
-    			html += '<p>'+dateevents[i].StartTime+'-'+dateevents[i].EndTime+'</p></div>';
-
+    			html += '<p>'+dateevents[i].StartDate+'-'+dateevents[i].EndDate+'</p></div>';
       }
     }
     $("#drawercontent").html(html);
@@ -202,28 +207,32 @@ $(document).ready(function(){
   function deleteevent(date,id){
 
 
-    $.ajax( 'http://thiman.me:1337/keshab/'+id, {
+    $.ajax( 'http://localhost:3000/events/'+id, {
       type: 'DELETE',
       success: function( resp ) {
-        console.log( "deleted" );
 
-        var temp = monthevents[date];
-        for(let i = 0; i < temp.length; i++){
-          if(temp[i]._id === id){
-            temp.splice(i,1);
-            break;
-          }
-        }
-        if(monthevents[date].length < 1)
-          $("#e"+date).removeClass("event");
-        loaddrawer(date);
+        if(resp.hasOwnProperty("error")){
+          alert(resp.error);
+        }else {
 
-        for(let i = 0; i < events.length; i++){
-          if(events[i]._id === id){
-            events.splice(i,1);
-            break;
+          var temp = monthevents[date];
+          for(let i = 0; i < temp.length; i++){
+            if(temp[i]._id === id){
+              temp.splice(i,1);
+              break;
+            }
           }
-        }
+          if(monthevents[date].length < 1)
+            $("#e"+date).removeClass("event");
+          loaddrawer(date);
+
+          for(let i = 0; i < events.length; i++){
+            if(events[i]._id === id){
+              events.splice(i,1);
+              break;
+            }
+          }
+      }
 
       },
       error: function( req, status, err ) {
@@ -251,26 +260,57 @@ $(document).ready(function(){
     outsideform.removeClass("dark");
   }
 
+  function getDate(date,time){
+    var year = date.substr(0,4);
+    var month = date.substr(5,2);
+    var day = date.substr(8,2);
+    var hour = time.substr(0,2);
+    var minute = time.substr(3,2);
+
+    console.log(hour+"/"+minute);
+    var d = new Date(year,(month-1)%12,day,hour,minute);
+
+    return d;
+  }
+
+
+
+
+
   $("#createbutton").click(function(e){
     //console.log($("#event-form").serializeArray());
     var d = $("#event-form").serializeArray();
+    var startDate = getDate(d[1].value,d[2].value);
+    var endDate = getDate(d[1].value,d[3].value);
+    var e = {
+      Title: d[0].value,
+      StartDate: startDate,
+      EndDate: endDate,
+      Repeat: d[4].value,
+      Description: d[5].value
+    }
 
     $.ajax( 'http://localhost:3000/events', {
       type: 'POST',
       dataType: 'json',
-      data: d,
+      data: e,
       success: function( resp ) {
-        console.log(resp);
-        events.push(resp);
-        if(monthevents.hasOwnProperty(resp.StartDate))
-          monthevents[resp.StartDate].push(resp);
-        else{
-          monthevents[resp.StartDate] = [];
-          monthevents[resp.StartDate].push(resp);
-        }
-        $("#e"+d[1]["value"]).addClass("event");
-        //console.log(monthevents);
-        document.getElementById("event-form").reset();
+        if(resp.hasOwnProperty("error")){
+          alert(resp.error);
+        }else {
+          events.push(resp);
+          var startdate = resp.StartDate.slice(0,10);
+          if(monthevents.hasOwnProperty(startdate))
+            monthevents[startdate].push(resp);
+          else{
+            monthevents[startdate] = [];
+            monthevents[startdate].push(resp);
+          }
+          $("#e"+startdate).addClass("event");
+
+          //console.log(monthevents);
+          document.getElementById("event-form").reset();
+      }
       },
       error: function( req, status, err ) {
         console.log( 'something went wrong', status, err );

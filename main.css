@@ -70,21 +70,21 @@
   text-align: center;
 }
 
-#drawercontent div {
+#drawercontent> div {
   position: relative;
   padding: 2px 0px 2px 5px;
   background: #eee;
   margin: 0;
   cursor: pointer;
 }
-#drawercontent div:hover {
+#drawercontent>div:hover {
   background: #ddd;
 
 }
-#drawercontent div p:first-child {
+#drawercontent>div p:first-child {
   font-size: 1.5em;
 }
-#drawercontent div:nth-child(odd) {
+#drawercontent>div:nth-child(odd) {
   background: #f9f9f9;
 }
 #drawer-cls-btn {

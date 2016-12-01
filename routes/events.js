@@ -3,52 +3,150 @@ var router = express.Router();
 
 
 var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+var schema = mongoose.Schema;
 
-var eventSchema = new Schema({
+
+var eventSchema = new schema({
   Title:  String,
-  StartDate: String,
-  StartTime: String,
-  EndTime: String,
-  repeat: String,
+  StartDate: Date,
+  EndDate: Date,
+  Repeat: String,
   Description: String
 });
 
+eventSchema.methods.hasConflicts = function(){
+
+  var that = this;
+
+
+  var s = this.StartDate;
+  var e = this.EndDate;
+
+  //console.log(that);
+  //console.log(eventModel.find({Title: "test"}));
+  // eventModel.find({ $or:
+  //   [
+  //     { $and : [{StartDate:{$gte: s } },{StartDate:{$lte:e } }]},
+  //     { $and : [{EndDate:{$gte:s } },{ EndDate:{$lte:e } }]}
+  //  ]
+  // },function(err,events){
+  //   if(err) console.log(err);
+  //   else {
+  //
+  //     console.log(events);
+  //   }
+  // });
+  return new Promise(function(resolve,reject){
+    eventModel.find({ $or:
+      [
+        { $and : [{StartDate:{$gte: s } },{StartDate:{$lte:e } }]},
+        { $and : [{EndDate:{$gte:s } },{ EndDate:{$lte:e } }]}
+     ]
+    },function(err,events){
+      if(err) console.log(err);
+      else {
+        if(events.length > 0){
+          resolve(events);
+        }else {
+          reject();
+        }
+      }
+    });
+  });
+
+}
 var eventModel = mongoose.model('event',eventSchema);
 
+
+
 router.get('/',function(req, res, next){
+
   eventModel.find(function(err, event){
     if(err){
       console.log(err);
+      res.send({
+        error: "Error: Getting events failed."
+      });
     } else {
       res.json(event);
     }
   });
 });
 
+
 router.post('/',function(req, res, next){
 
 
   var newEvent = new eventModel(req.body);
+  newEvent.hasConflicts()
+  .then(function(events){
+    res.send({
+      error: "Error: Conflicting event."
+    });
 
-  newEvent.save(function(err,event){
-    if(err){
-      console.log(err);
-      res.send(err);
-    } else {
-      console.log("good",event);
-      res.json(event);
-    }
-  })
+  }).catch(function(){
+    newEvent.save(function(err,event){
+      if(err){
+        console.log(err);
+        res.send({
+          error: "Error: Adding event failed."
+        });
+      } else {
+        res.json(event);
+      }
+    });
+
+  });
+
+  // newEvent.save(function(err,event){
+  //   if(err){
+  //     console.log(err);
+  //     res.send({
+  //       error: "Error: Adding event failed."
+  //     });
+  //   } else {
+  //     res.json(event);
+  //   }
+  // });
+
 
 });
 
 router.delete('/:id',function(req, res, next){
-    res.send(req.params.id);
+    eventModel.findByIdAndRemove(req.params.id,function(err, event){
+      if(err){
+        res.send({
+          error: "Error: Deleting event failed."
+        });
+      } else {
+        res.send(event);
+      }
+    });
 });
 
-router.patch('/',function(req, res, next){
-  res.send('Patch');
+router.patch('/:id',function(req, res, next){
+  eventModel.findById(req.params.id,function(err,event){
+    if(err){
+      res.send({
+        error: "Error: Updating event failed."
+      });
+    } else {
+      event.Title = req.body.Title || event.Title;
+      event.StartDate = req.body.StartDate || event.StartDate;
+      event.EndDate = req.body.EndDate || event.EndDate;
+      event.Repeat = req.body.Repeat || event.Repeat;
+      event.Description = req.body.Description || event.Description;
+
+      event.save(function(err,event){
+        if(err)
+          res.send(err);
+        else{
+          res.json(event);
+        }
+      });
+    }
+
+  })
 
 });
 
