@@ -2,21 +2,19 @@ $(document).ready(function(){
 
   var monthevents = {};
 
-  var date = new Date();
-  var currentday = date.getDate();
-  var currentmonth = date.getMonth();
-  var currentyear = date.getFullYear();
+
 
   var weekdays = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
 
 
-  var events = [];
+  //var events = [];
 
 
 
   $.ajax( 'http://localhost:3000/events', {
     type: 'GET',
     dataType: 'json',
+    data: { date: currentmonth, calendar: "monthly"},
     success: function( resp ) {
 
       if(resp.hasOwnProperty("error")){
@@ -49,11 +47,12 @@ $(document).ready(function(){
     //console.log(t.toLocaleDateString());
     //monthevents = getEvents(t.toLocaleDateString());
 
-    if(events != null) monthevents = getEvents(t.toLocaleDateString());
+    //if(events != null) monthevents = getEvents(t.toLocaleDateString());
     //console.log(monthevents);
 
-    $("#cmonth").html(new Intl.DateTimeFormat('en-US',{month: 'long'}).format(t));
-    $("#cyear").html(year);
+  //  $("#cmonth").html(new Intl.DateTimeFormat('en-US',{month: 'long'}).format(t));
+  //  $("#cyear").html(year);
+
 
     html += '<table class="monthtable"><thead class = "weekdays" ><tr>'
     for(var i = 0; i < 7; i++)
@@ -122,16 +121,22 @@ $(document).ready(function(){
 
 
     });
-
-
-
-
-
   }
 
   loadCalendar(currentyear,currentmonth);
 
-  $(".btn-prev-mnth").click(function(){
+
+  function updateUrl(){
+    var url = document.location.href;
+    var n;
+    if((n=url.indexOf("?date")) != -1){
+      url = url.substr(0,n);
+    }
+    document.location = url+"?date="+currentyear+"-"+(currentmonth+1);
+
+  }
+
+  $(".btn-prev").click(function(){
 
     currentmonth--;
     if(currentmonth < 0){
@@ -139,16 +144,22 @@ $(document).ready(function(){
       currentyear--;
     }
 
-    loadCalendar(currentyear,currentmonth);
+    updateUrl();
+  //  loadCalendar(currentyear,currentmonth);
+
+
   });
 
-  $(".btn-nxt-mnth").click(function(){
+  $(".btn-nxt").click(function(){
     currentmonth++;
     if(currentmonth > 11){
       currentmonth = 0;
       currentyear++;
     }
-    loadCalendar(currentyear,currentmonth);
+    updateUrl();
+
+  //  loadCalendar(currentyear,currentmonth);
+
   });
 
   function getEvents(mdate){
@@ -183,7 +194,7 @@ $(document).ready(function(){
   //  var drawer = document.querySelector("#drawercontent");
     var html = "";
 
-    html += '<h1 id="drawertitle">'+weekdays[new Date(date).getDay()+1]+' '+ date +'</h1>';
+    html += '<h1 id="drawertitle">'+weekdays[(new Date(date).getDay()+1)%7]+' '+ date +'</h1>';
 
     if( !monthevents.hasOwnProperty(date) || monthevents[date].length < 1){
       html += '<p>No Events</p>';
@@ -267,9 +278,9 @@ $(document).ready(function(){
     var hour = time.substr(0,2);
     var minute = time.substr(3,2);
 
-    console.log(hour+"/"+minute);
-    var d = new Date(year,(month-1)%12,day,hour,minute);
 
+    var d = new Date(year,(month-1)%12,day,hour,minute);
+    console.log(d);
     return d;
   }
 
@@ -309,7 +320,7 @@ $(document).ready(function(){
           $("#e"+startdate).addClass("event");
 
           //console.log(monthevents);
-          document.getElementById("event-form").reset();
+
       }
       },
       error: function( req, status, err ) {
@@ -317,6 +328,7 @@ $(document).ready(function(){
       }
     });
 
+    document.getElementById("event-form").reset();
     hideForm();
 
   });

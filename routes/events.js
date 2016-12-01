@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 
+
 var mongoose = require('mongoose');
 var schema = mongoose.Schema;
 
@@ -22,20 +23,6 @@ eventSchema.methods.hasConflicts = function(){
   var s = this.StartDate;
   var e = this.EndDate;
 
-  //console.log(that);
-  //console.log(eventModel.find({Title: "test"}));
-  // eventModel.find({ $or:
-  //   [
-  //     { $and : [{StartDate:{$gte: s } },{StartDate:{$lte:e } }]},
-  //     { $and : [{EndDate:{$gte:s } },{ EndDate:{$lte:e } }]}
-  //  ]
-  // },function(err,events){
-  //   if(err) console.log(err);
-  //   else {
-  //
-  //     console.log(events);
-  //   }
-  // });
   return new Promise(function(resolve,reject){
     eventModel.find({ $or:
       [
@@ -61,7 +48,12 @@ var eventModel = mongoose.model('event',eventSchema);
 
 router.get('/',function(req, res, next){
 
-  eventModel.find(function(err, event){
+  var q;
+  if(req.query.calendar === "monthly"){
+    q = { StartDate.getMonth():req.query.date };
+  }
+
+  eventModel.find(q,function(err, event){
     if(err){
       console.log(err);
       res.send({

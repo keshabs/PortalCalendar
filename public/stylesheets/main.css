@@ -2,7 +2,7 @@
   margin: 10px 10px 10px 10px;
   text-align: center;
 }
-.title #cmonth {
+.title #monthYear,#weektitle {
   text-align: center;
   font-size: 3em;
   margin-bottom: 0px;
@@ -173,7 +173,7 @@
   height: 25px;
 }
 
-.btn-prev-mnth,.btn-nxt-mnth{
+.btn-prev,.btn-nxt{
   font-size: 20px;
   background: none;
   border: none;
@@ -182,10 +182,10 @@
 
 }
 
-.btn-prev-mnth{
+.btn-prev{
   left: 0;
 }
-.btn-nxt-mnth {
+.btn-nxt {
   right: 0;
 
 }

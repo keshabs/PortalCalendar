@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Month</title>
-
-
-  <link rel="stylesheet" type="text/css" href="main.css">
+	<title><%= currentDateTitle %></title>
+  <link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </head>
 <body>
@@ -12,18 +10,18 @@
 
 	<div class="title">
 		<div>
-			<button type="button" class="btn-prev-mnth"><</button>
-			<span id="cmonth">cMonth</span> <span id="cyear">cYear</span>
-			<button type="button" class="btn-nxt-mnth">></button>
+			<button type="button" class="btn-prev"><</button>
+			<span id="monthYear"><%= currentDateTitle%></span>
+			<button type="button" class="btn-nxt">></button>
 		</div>
 
 			<div class="navbar">
 				<a href=".">Month</a>
-				<a href="week.html">Week</a>
-				<a href="day.html">Day</a>
+				<a href="calendar/week">Week</a>
+				<a href="day">Day</a>
 			</div>
 	</div>
-	
+
 	<div class="sidedrawer hide slide" id="event-drawer">
 			<div id="drawercontent">
 			</div>
@@ -96,8 +94,13 @@
 	</div>
 
 
+<script>
+  var cdate = new Date('<%=currentDate%>');
+  let currentmonth = cdate.getMonth();
+  let currentyear = cdate.getFullYear();
+</script>
 
-<script src="javascript/monthloader_v1.js"></script>
+<script src="/javascripts/monthloader_v1.js"></script>
 
 
 </body>
