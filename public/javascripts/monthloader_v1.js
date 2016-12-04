@@ -14,15 +14,16 @@ $(document).ready(function(){
   $.ajax( 'http://localhost:3000/events', {
     type: 'GET',
     dataType: 'json',
-    data: { date: currentmonth, calendar: "monthly"},
+    data: { date: new Date(currentyear,currentmonth).toISOString(), calendar: "monthly"},
     success: function( resp ) {
 
       if(resp.hasOwnProperty("error")){
         alert(resp.error);
       }else {
 
-      events = resp;
+      console.log(resp);
 
+      monthevents = getEvents(new Date(currentyear,currentmonth,1).toLocaleDateString(),resp);
       loadCalendar(currentyear,currentmonth);
     }
     },
@@ -162,7 +163,7 @@ $(document).ready(function(){
 
   });
 
-  function getEvents(mdate){
+  function getEvents(mdate,events){
     var e = {};
 
     var d = new Date(mdate);
@@ -237,12 +238,6 @@ $(document).ready(function(){
             $("#e"+date).removeClass("event");
           loaddrawer(date);
 
-          for(let i = 0; i < events.length; i++){
-            if(events[i]._id === id){
-              events.splice(i,1);
-              break;
-            }
-          }
       }
 
       },
@@ -309,7 +304,6 @@ $(document).ready(function(){
         if(resp.hasOwnProperty("error")){
           alert(resp.error);
         }else {
-          events.push(resp);
           var startdate = resp.StartDate.slice(0,10);
           if(monthevents.hasOwnProperty(startdate))
             monthevents[startdate].push(resp);

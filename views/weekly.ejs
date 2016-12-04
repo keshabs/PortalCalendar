@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Portal Calendar</title>
+    <title><%=weekTitle%></title>
 
 
     <link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
@@ -15,7 +15,7 @@
     <div class="title">
   		<div>
   			<button type="button" class="btn-prev"><</button>
-  			<span id="weektitle">Week</span>
+  			<span id="weektitle"><%=weekTitle%></span>
   			<button type="button" class="btn-nxt">></button>
   		</div>
 
@@ -30,8 +30,72 @@
     </div>
 
 
+    <div class="addeventbutton" id="add-btn">
+  		<button type="button" class="btn-lg">+</button>
+  	</div>
+  	<div class="eventform hide">
+  		<form id="event-form">
+  				<h3>Calendar Event</h3>
+
+  				<div class="formtitle">
+  					<label for="eventtitle">Title</label>
+  					<input type="text" placeholder="Title" id="eventtitle" name="Title" required>
+  				</div>
+
+  				<div class="eventdatetime">
+
+  						<label for="eventdate">Date</label>
+  						<input type="date" id="eventdate" name="StartDate" required>
 
 
-      <script src="/javascripts/weekloader_v1.js"></script>
+  					<label for="starttime"><br>Start Time</label>
+  					<input type="time" id="eventstarttime" name="StartTime" required>
+
+  					<label for="endtime">End Time</label>
+  					<input type="time" id="eventendtime" name="EndTime" required>
+  				</div>
+
+
+
+  				<div class="repetitionradio">
+  					<label for="eventrepetition">Repetition</label>
+  					<input type="radio" name="Repeat" value="none" checked>None</input>
+  					<input type="radio" name="Repeat" value="weekly">Weekly</input>
+  					<input type="radio" name="Repeat" value="monthly">Monthly</input>
+  				</div>
+  				<div class="weeklycheckbox hide">
+  					<input type="checkbox" class="weekrepeat" name="S">S</input>
+  					<input type="checkbox" class="weekrepeat" name="M">M</input>
+  					<input type="checkbox" class="weekrepeat" name="T">T</input>
+  					<input type="checkbox" class="weekrepeat" name="W">W</input>
+  					<input type="checkbox" class="weekrepeat" name="Th">Th</input>
+  					<input type="checkbox" class="weekrepeat" name="F">F</input>
+  					<input type="checkbox" class="weekrepeat" name="Sa">Sa</input>
+  				</div>
+  				<div class="repetitiondate hide">
+  					<label for="endeventdate" name="EndDate">End Date</label>
+  					<input type="date" id="eventenddate">
+  				</div>
+
+  				<div class="eventdescription">
+  					<label for="eventdescription" >Description</label>
+  					<textarea rows="5" id="eventdescription" name="Description"></textarea>
+  				</div>
+
+  				<div class="form-btns">
+  					<button type="button" id="createbutton">Create Event</button>
+  					<button type="button" id="close-btn">Cancel</button>
+  				</div>
+
+  		</form>
+  	</div>
+
+
+    <script>
+      let startWeek = new Date('<%=startWeek%>');
+      let endWeek = new Date('<%=endWeek%>');
+    </script>
+
+    <script src="/javascripts/weekloader_v1.js"></script>
   </body>
 </html>

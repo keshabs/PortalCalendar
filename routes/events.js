@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var moment = require('moment');
 
 
 
@@ -50,9 +51,24 @@ router.get('/',function(req, res, next){
 
   var q;
   if(req.query.calendar === "monthly"){
-    q = { StartDate.getMonth():req.query.date };
-  }
 
+    var s = moment(req.query.date);
+    var e = s.clone().endOf('month').toDate();
+
+
+    s = s.toDate();
+    e.setDate(e.getDate()-1);
+
+    q = {StartDate: {$gte:s,$lte:e}};
+
+  } else if (req.query.calendar === "weekly"){
+    var s = moment(req.query.startweek);
+    var e = moment(req.query.endweek);
+
+
+
+    q = {StartDate: {$gte:s.toDate(),$lte:e.toDate()}};
+  }
   eventModel.find(q,function(err, event){
     if(err){
       console.log(err);
@@ -63,6 +79,7 @@ router.get('/',function(req, res, next){
       res.json(event);
     }
   });
+
 });
 
 
