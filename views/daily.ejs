@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title><%=weekTitle%></title>
+    <title><%=currentDateTitle%></title>
 
 
     <link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
@@ -15,7 +15,7 @@
     <div class="title">
   		<div>
   			<button type="button" class="btn-prev"><</button>
-  			<span id="weektitle"><%=weekTitle%></span>
+  			<span id="weektitle"><%=currentDateTitle%></span>
   			<button type="button" class="btn-nxt">></button>
   		</div>
 
@@ -92,10 +92,9 @@
 
 
     <script>
-      let startWeek = new Date('<%=startWeek%>');
-      let endWeek = new Date('<%=endWeek%>');
+      var cdate = new Date('<%=currentDate%>');
     </script>
 
-    <script src="/javascripts/weekloader_v1.js"></script>
+    <script src="/javascripts/dayloader_v1.js"></script>
   </body>
 </html>

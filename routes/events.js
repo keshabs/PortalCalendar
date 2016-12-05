@@ -64,11 +64,18 @@ router.get('/',function(req, res, next){
   } else if (req.query.calendar === "weekly"){
     var s = moment(req.query.startweek);
     var e = moment(req.query.endweek);
+    q = {StartDate: {$gte:s.toDate(),$lte:e.toDate()}};
+  } else if (req.query.calendar === "daily"){
+    var s = moment(req.query.date);
+    var e = s.clone().endOf('day');
 
-
+    console.log(s);
+    console.log(e);
 
     q = {StartDate: {$gte:s.toDate(),$lte:e.toDate()}};
   }
+
+
   eventModel.find(q,function(err, event){
     if(err){
       console.log(err);
@@ -107,16 +114,7 @@ router.post('/',function(req, res, next){
 
   });
 
-  // newEvent.save(function(err,event){
-  //   if(err){
-  //     console.log(err);
-  //     res.send({
-  //       error: "Error: Adding event failed."
-  //     });
-  //   } else {
-  //     res.json(event);
-  //   }
-  // });
+
 
 
 });

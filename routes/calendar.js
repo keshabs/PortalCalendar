@@ -37,5 +37,21 @@ router.get('/week',function(req,res,next){
     endWeek: eDate
   });
 });
+router.get('/day',function(req,res,next){
+  var cDate = moment().startOf('day');
+  if(req.query.date){
+    cDate = moment(req.query.date);
+
+    if(cDate == null || !cDate.isValid())
+      cDate = moment().startOf('day');
+
+  }
+
+  res.render('daily',
+  { currentDateTitle: cDate.format("MMMM D YYYY "),
+    currentDate: cDate
+  });
+});
+
 
 module.exports = router;

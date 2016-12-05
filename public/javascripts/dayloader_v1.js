@@ -1,13 +1,15 @@
 $(document).ready(function(){
-  var weekdays = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-
-  var weekevents = {};
 
 
+  var dayevents = {};
+
+
+
+  console.log(cdate);
   $.ajax( 'http://localhost:3000/events', {
     type: 'GET',
     dataType: 'json',
-    data: { startweek: startWeek.toISOString(), endweek: endWeek.toISOString(), calendar: "weekly"},
+    data: { date: cdate.toISOString(),calendar: "daily"},
     success: function( resp ) {
 
       if(resp.hasOwnProperty("error")){
@@ -16,7 +18,7 @@ $(document).ready(function(){
 
       //console.log(resp);
 
-      weekevents = getEvents(resp);
+      dayevents = getEvents(resp);
       loadEvents(resp);
 
     }
@@ -59,11 +61,11 @@ $(document).ready(function(){
       //console.log(s.getHours());
       //console.log(e.getHours());
 
-      var id = 'd'+(s.getMonth()+1)+'-'+s.getDate()+'-';
+
       for(var j = 0; j < e.getHours()-s.getHours(); j++){
-        var did = id+(s.getHours()+j);
+        var did = 'd'+(s.getHours()+j);
         if(j == 0){
-            $("#"+did).html(events[i].Title);
+            $("#"+did).html(events[i].Title+':'+events[i].Description);
         }
         $("#"+did).addClass("event");
 
@@ -77,30 +79,21 @@ $(document).ready(function(){
     var date = new Date(d);
 
     var html = "";
-    html += '<table class="weektable"><thead class = "weekdays" ><tr><th>Time</th>';
+    html += '<table class="daytable"><thead ><tr><th class="timecol">Time</th>';
 
-    var dates = [];
-    for(var i = 0; i < 7; i++){
-      var dateCol = (date.getMonth()+1) + '-' + date.getDate();
-      dates.push(dateCol);
-      html += '<th>'+ weekdays[i] + '<br>' + dateCol + '</th>';
-      date.setDate(date.getDate()+1);
-    }
-    html += '</tr></thead><tbody>';
+    html += '<th>Event</th></tr></thead><tbody>';
 
     var time = 11;
     for(var i = 0; i < 24; i++){
       html += '<tr>';
-      for(var j = 0; j < 8; j++){
+      for(var j = 0; j < 2; j++){
         if(j == 0){
           var timeCol = time < 23 ? ((time%12)+1) +":00 AM" : ((time%12)+1) +":00 PM";
           time++;
           html += '<td>'+timeCol+'</td>';
         }else{
-          var id = dates[j-1]+'-'+(time-12);
-          html += '<td id="d'+id+'"></td>';
-          //html += '<td class="test"></td>';
-        }
+          var id = (time-12);
+          html += '<td id="d'+id+'"></td>';        }
       }
       html += '</tr>';
     }
@@ -110,7 +103,7 @@ $(document).ready(function(){
 
   }
 
-  loadCalendar(startWeek);
+  loadCalendar(cdate);
 
   function updateUrl(weekDate){
     var url = document.location.href;
@@ -124,13 +117,13 @@ $(document).ready(function(){
   }
 
   $(".btn-prev").click(function(){
-    startWeek.setDate(startWeek.getDate()-1);
-    updateUrl(startWeek.toLocaleDateString());
+    cdate.setDate(cdate.getDate()-1);
+    updateUrl(cdate.toLocaleDateString());
   });
 
   $(".btn-nxt").click(function(){
-    endWeek.setDate(endWeek.getDate()+1);
-    updateUrl(endWeek.toLocaleDateString());
+    cdate.setDate(cdate.getDate()+1);
+    updateUrl(cdate.toLocaleDateString());
   });
 
   var eventform = $(".eventform");
@@ -190,13 +183,12 @@ $(document).ready(function(){
           alert(resp.error);
         }else {
           var startdate = resp.StartDate.slice(0,10);
-          if(weekevents.hasOwnProperty(startdate))
-            weekevents[startdate].push(resp);
+          if(dayevents.hasOwnProperty(startdate))
+            dayevents[startdate].push(resp);
           else{
-            weekevents[startdate] = [];
-            weekevents[startdate].push(resp);
+            dayevents[startdate] = [];
+            dayevents[startdate].push(resp);
           }
-          console.log(resp);
           var newevent = [];
           newevent.push(resp);
           loadEvents(newevent);
