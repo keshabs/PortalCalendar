@@ -104,9 +104,6 @@ $(document).ready(function(){
     drawer.forEach(function(el){
       el.addEventListener('click',function(e){
         loaddrawer(this.dataset.date);
-
-        var date = this.dataset.date;
-
         drawerClassList.remove("hide");
         setTimeout(function(){drawerClassList.remove("slide");},10);
 
@@ -202,17 +199,24 @@ $(document).ready(function(){
     } else {
       var dateevents = monthevents[date];
       for(var i = 0; i < dateevents.length; i++){
-          html += '<div><p>'+dateevents[i].Title+'<span class="deleteevent" data-id="'+dateevents[i]._id+'">\u00D7</span></p>';
-    			html += '<p>'+dateevents[i].StartDate+'-'+dateevents[i].EndDate+'</p></div>';
+          html += '<div><p>'+dateevents[i].Title+'</p>';
+          var s = new Date(dateevents[i].StartDate);
+          var e = new Date(dateevents[i].EndDate);
+    			html += '<p>'+s.getHours()+':'+s.getMinutes()+'-'+e.getHours()+':'+e.getMinutes()+'</p>';
+          html += '<p><button class="delete-btn" data-id="'+dateevents[i]._id+'">Delete</button><button class="edit-btn" data-id="'+dateevents[i]._id+'">Edit</button></p></div>';
       }
     }
     $("#drawercontent").html(html);
-    var drawerdelete = document.querySelectorAll(".deleteevent");
+    var drawerdelete = document.querySelectorAll(".delete-btn");
 
     drawerdelete.forEach(function(el){
       el.addEventListener('click',function(e){
           deleteevent(date,this.dataset.id);
       });
+    });
+
+    $(".edit-btn").click(function(){
+      editevent(date,this.dataset.id);
     });
   }
 
@@ -248,8 +252,26 @@ $(document).ready(function(){
 
   }
 
+
   var eventform = $(".eventform");
-  var outsideform = $("#main");
+  var outsideform = $(".outsideform");
+  function editevent(date,id){
+    var e = {};
+    for(var i = 0; i < monthevents[date].length; i++){
+      if(monthevents[date][i]._id === id){
+        e = monthevents[date][i];
+        break;
+      }
+    }
+    $.each(e,function(key,value){
+      $('input[name="'+key+'"]').val(value);
+    });
+    eventform.removeClass("hide");
+    outsideform.addClass("dark");
+
+  }
+
+
 
   $("#add-btn").click(function(){
     eventform.removeClass("hide");

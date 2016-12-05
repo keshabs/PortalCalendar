@@ -101,11 +101,11 @@
 }
 
 
-.sidedrawer button {
+/*.sidedrawer button {
   position: absolute;
   right: 0;
   text-align: center;
-}
+}*/
 
 .btn-lg {
   width: 50px;
@@ -166,6 +166,8 @@
 
 .event {
   background-color: lightgreen;
+  cursor: pointer;
+
 }
 
 

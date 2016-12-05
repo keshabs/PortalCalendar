@@ -27,8 +27,8 @@ eventSchema.methods.hasConflicts = function(){
   return new Promise(function(resolve,reject){
     eventModel.find({ $or:
       [
-        { $and : [{StartDate:{$gte: s } },{StartDate:{$lte:e } }]},
-        { $and : [{EndDate:{$gte:s } },{ EndDate:{$lte:e } }]}
+        { $and : [{StartDate:{$lte: s } },{EndDate:{$gte:s } }]},
+        { $and : [{StartDate:{$lte: e } },{ EndDate:{$gte:e } }]}
      ]
     },function(err,events){
       if(err) console.log(err);

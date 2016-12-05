@@ -60,16 +60,44 @@ $(document).ready(function(){
       //console.log(e.getHours());
 
       var id = 'd'+(s.getMonth()+1)+'-'+s.getDate()+'-';
+      var data = null;
       for(var j = 0; j < e.getHours()-s.getHours(); j++){
         var did = id+(s.getHours()+j);
+        var cell = $("#"+did);
         if(j == 0){
-            $("#"+did).html(events[i].Title);
+            cell.html(events[i].Title);
+            data = s.toISOString().slice(0,10);
         }
-        $("#"+did).addClass("event");
+       cell.addClass("event");
+       cell.attr("data-date",data);
 
 
         }
       }
+
+
+      var drawer = document.querySelectorAll(".event");
+      var drawerClassList = document.querySelector(".sidedrawer").classList;
+
+      drawer.forEach(function(el){
+        el.addEventListener('click',function(e){
+          loaddrawer(this.dataset.date);
+
+          drawerClassList.remove("hide");
+          setTimeout(function(){drawerClassList.remove("slide");},10);
+
+        });
+
+      });
+
+      var drawerclsbtn = document.querySelector("#drawer-cls-btn");
+      drawerclsbtn.addEventListener('click',function(e){
+
+          drawerClassList.add("slide");
+          setTimeout(function(){drawerClassList.add("hide");},500);
+
+
+        });
   }
 
   var loadCalendar = function(d){
@@ -145,7 +173,37 @@ $(document).ready(function(){
   });
   $("#close-btn").click(function(){
     hideForm();
-  })
+  });
+  function loaddrawer(date){
+  //  var drawer = document.querySelector("#drawercontent");
+    var html = "";
+
+    html += '<h1 id="drawertitle">'+weekdays[(new Date(date).getDay()+1)%7]+' '+ date +'</h1>';
+
+    if( !weekevents.hasOwnProperty(date) || weekevents[date].length < 1){
+      html += '<p>No Events</p>';
+    } else {
+      var dateevents = weekevents[date];
+      for(var i = 0; i < dateevents.length; i++){
+          html += '<div><p>'+dateevents[i].Title+'<span class="deleteevent" data-id="'+dateevents[i]._id+'">\u00D7</span></p>';
+          var s = new Date(dateevents[i].StartDate);
+          var e = new Date(dateevents[i].EndDate);
+    			html += '<p>'+s.getHours()+':'+s.getMinutes()+'-'+e.getHours()+':'+e.getMinutes()+'</p></div>';
+      }
+    }
+    $("#drawercontent").html(html);
+    var drawerdelete = document.querySelectorAll(".deleteevent");
+
+    drawerdelete.forEach(function(el){
+      el.addEventListener('click',function(e){
+          //deleteevent(date,this.dataset.id);
+      });
+    });
+  }
+
+
+
+
   function hideForm(){
     eventform.addClass("hide");
     outsideform.removeClass("dark");
@@ -213,4 +271,8 @@ $(document).ready(function(){
     hideForm();
 
   });
+
+
+
+
 });
