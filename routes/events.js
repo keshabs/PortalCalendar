@@ -23,6 +23,7 @@ eventSchema.methods.hasConflicts = function(){
 
   var s = this.StartDate;
   var e = this.EndDate;
+  var id = this._id;
 
   return new Promise(function(resolve,reject){
     eventModel.find({ $or:
@@ -34,7 +35,11 @@ eventSchema.methods.hasConflicts = function(){
       if(err) console.log(err);
       else {
         if(events.length > 0){
-          resolve(events);
+          if(events.length === 1 && id.equals(events[0]._id)){
+            reject();
+          }else {
+            resolve(events);
+          }
         }else {
           reject();
         }
@@ -132,24 +137,36 @@ router.delete('/:id',function(req, res, next){
 });
 
 router.patch('/:id',function(req, res, next){
-  eventModel.findById(req.params.id,function(err,event){
+  eventModel.findById(req.params.id,function(err,newEvent){
     if(err){
       res.send({
         error: "Error: Updating event failed."
       });
     } else {
-      event.Title = req.body.Title || event.Title;
-      event.StartDate = req.body.StartDate || event.StartDate;
-      event.EndDate = req.body.EndDate || event.EndDate;
-      event.Repeat = req.body.Repeat || event.Repeat;
-      event.Description = req.body.Description || event.Description;
+      newEvent.Title = req.body.Title || newEvent.Title;
+      newEvent.StartDate = req.body.StartDate || newEvent.StartDate;
+      newEvent.EndDate = req.body.EndDate || newEvent.EndDate;
+      newEvent.Repeat = req.body.Repeat || newEvent.Repeat;
+      newEvent.Description = req.body.Description || newEvent.Description;
 
-      event.save(function(err,event){
-        if(err)
-          res.send(err);
-        else{
-          res.json(event);
-        }
+      newEvent.hasConflicts()
+      .then(function(events){
+        res.send({
+          error: "Error: Conflicting event."
+        });
+
+      }).catch(function(){
+        newEvent.save(function(err,event){
+          if(err){
+            console.log(err);
+            res.send({
+              error: "Error: Adding event failed."
+            });
+          } else {
+            res.json(event);
+          }
+        });
+
       });
     }
 
